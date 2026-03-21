@@ -1,0 +1,167 @@
+/* frontend/src/Home.css */
+
+.home {
+  min-height: 100vh;
+  /* Use radial gradient for a modern glow effect */
+  background: radial-gradient(circle at top left, #1e293b 0%, #09090b 100%);
+  padding-bottom: 60px;
+}
+
+/* Premium Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: rgba(9, 9, 11, 0.6);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(to right, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.navbar a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navbar a:hover {
+  color: var(--text-main);
+}
+
+/* Main Container */
+.main-card {
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+/* Scan Top Bar */
+.scan-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 30px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.scan-bar h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: var(--text-main);
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 5px;
+  background-color: #1e293b;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  color: var(--text-main);
+  padding: 12px 16px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(350px, 400px) 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* QR Code Display Container */
+.qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.qr-section svg {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.qr-section p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 15px 0 0 0;
+}
+
+/* Event Log specific */
+.event-log-container {
+  height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+.event-log-container::-webkit-scrollbar {
+  width: 6px;
+}
+.event-log-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
