@@ -94,7 +94,7 @@ function ItemPage() {
 
   if (loading) {
     return (
-      <div style={styles.container}>
+      <div style={{ padding: "100px", textAlign: "center" }}>
         <p>Loading item...</p>
       </div>
     );
@@ -102,7 +102,7 @@ function ItemPage() {
 
   if (!item || item.id?.toString() === "0") {
     return (
-      <div style={styles.container}>
+      <div style={{ padding: "100px", textAlign: "center" }}>
         <h2>Item Not Found</h2>
         <p>No item exists with ID #{id}</p>
         <Link to="/">
@@ -116,19 +116,19 @@ function ItemPage() {
   const isOwner = account && account.toLowerCase() === item.owner?.toLowerCase();
 
   return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <Link to="/" style={{ color: "#38bdf8", textDecoration: "none", marginBottom: "15px", display: "inline-block" }}>
+    <div style={{ padding: "60px 20px", minHeight: "100vh", display: "flex", justifyContent: "center" }}>
+      <div className="glass-card" style={{ maxWidth: "600px", width: "100%" }}>
+        <Link to="/" style={{ color: "var(--accent-cyan)", textDecoration: "none", marginBottom: "20px", display: "inline-block" }}>
           ← Back to Home
         </Link>
 
-        <h2 style={{ marginTop: "10px" }}>Item #{id}</h2>
+        <h2 style={{ margin: "10px 0 20px 0", fontSize: "28px" }}>Item Details #{id}</h2>
 
         {/* Status Badge */}
-        <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginBottom: "25px" }}>
           <span
+            className="badge"
             style={{
-              ...styles.badge,
               background: STATUS_COLORS[statusIndex] || "#64748b",
             }}
           >
@@ -136,83 +136,99 @@ function ItemPage() {
           </span>
         </div>
 
-        <div style={{ textAlign: "center", marginBottom: "25px" }}>
+        {/* Item Image */}
+        <div style={{ marginBottom: "25px", borderRadius: "15px", overflow: "hidden", border: "1px solid var(--border-color)", background: "rgba(0,0,0,0.3)" }}>
+          {item.image ? (
+            <img 
+              src={item.image} 
+              alt={item.name} 
+              style={{ width: "100%", height: "400px", objectFit: "cover" }} 
+            />
+          ) : (
+            <div style={{ height: "200px", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-muted)" }}>
+              No image provided
+            </div>
+          )}
+        </div>
+
+        <div style={{ textAlign: "center", marginBottom: "30px", background: "rgba(255,255,255,0.03)", padding: "20px", borderRadius: "15px", border: "1px dashed var(--border-color)" }}>
           <div style={{ background: "white", padding: "10px", display: "inline-block", borderRadius: "10px" }}>
             {item.qrHash ? (
-              <QRCodeSVG value={item.qrHash} size={150} />
+              <QRCodeSVG value={`${window.location.origin}/item/${id}`} size={160} />
             ) : (
-              <div style={{ width: 150, height: 150, display: "flex", alignItems: "center", justifyContent: "center", color: "black" }}>No QR</div>
+              <div style={{ width: 160, height: 160, display: "flex", alignItems: "center", justifyContent: "center", color: "black" }}>No QR</div>
             )}
           </div>
+          <p style={{ marginTop: "12px", color: "var(--text-muted)", fontSize: "14px" }}>NFT Verification QR Code</p>
         </div>
 
         {/* Item Details */}
-        <div style={styles.detailRow}>
-          <span style={styles.label}>Name</span>
-          <span>{item.name}</span>
+        <div className="detail-row">
+          <span className="detail-label">Name</span>
+          <span style={{ fontSize: "18px", fontWeight: "600" }}>{item.name}</span>
         </div>
 
-        <div style={styles.detailRow}>
-          <span style={styles.label}>Description</span>
+        <div className="detail-row">
+          <span className="detail-label">Description</span>
           <span>{item.description}</span>
         </div>
 
-        <div style={styles.detailRow}>
-          <span style={styles.label}>Owner</span>
-          <span style={{ fontSize: "13px", wordBreak: "break-all", color: "#94a3b8" }}>
+        <div className="detail-row">
+          <span className="detail-label">Owner Wallet</span>
+          <span style={{ fontSize: "12px", wordBreak: "break-all", color: "var(--text-muted)" }}>
             {item.owner}
           </span>
         </div>
 
-        <div style={styles.detailRow}>
-          <span style={styles.label}>Contact</span>
-          <span>{item.contactInfo || "Not provided"}</span>
+        <div className="detail-row">
+          <span className="detail-label">Contact Info (Email or Phone)</span>
+          <span style={{ fontWeight: "500", color: "var(--accent-cyan)" }}>{item.contactInfo || "Not provided"}</span>
         </div>
 
-        <div style={styles.detailRow}>
-          <span style={styles.label}>Registered</span>
+        <div className="detail-row">
+          <span className="detail-label">Registry Timestamp</span>
           <span>{item.timestamp ? new Date(Number(item.timestamp) * 1000).toLocaleString() : "Unknown"}</span>
         </div>
 
         {/* Action Buttons */}
-        <div style={{ marginTop: "25px", borderTop: "1px solid #334155", paddingTop: "20px" }}>
-          <h3>Actions</h3>
+        <div style={{ marginTop: "30px", borderTop: "1px solid var(--border-color)", paddingTop: "25px" }}>
+          <h3 style={{ marginBottom: "20px" }}>Management Actions</h3>
 
           {!account ? (
-            <button className="btn primary" onClick={connectWallet}>
-              Connect Wallet to Take Action
+            <button className="btn primary" style={{ width: "100%" }} onClick={connectWallet}>
+              Connect Wallet to Manage Item
             </button>
           ) : (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
               {/* Owner-only actions */}
               {isOwner && (
                 <>
                   {statusIndex === 0 && (
                     <button
-                      className="btn scan"
+                      className="btn secondary"
+                      style={{ background: "#f97316", border: "none" }}
                       onClick={() => handleStatusAction("reportLost")}
                       disabled={actionLoading}
                     >
-                      {actionLoading ? "Processing..." : "Report Lost"}
+                      {actionLoading ? "Processing..." : "🚨 Report Lost"}
                     </button>
                   )}
                   <button
-                    className="btn"
+                    className="btn secondary"
                     onClick={() => {
                       addNFTToMetaMask(id)
                         .catch(err => alert("Failed to add NFT: " + err.message));
                     }}
-                    style={{ background: "#f59e0b", color: "white" }}
+                    style={{ background: "#f59e0b", border: "none" }}
                   >
-                    Add to MetaMask
+                    🦊 Add to MetaMask
                   </button>
                   <button
-                    className="btn"
+                    className="btn red"
                     onClick={handleDelete}
                     disabled={actionLoading}
-                    style={{ background: "#ef4444", color: "white" }}
                   >
-                    Delete Item
+                    🗑️ Delete Item
                   </button>
                 </>
               )}
@@ -225,7 +241,7 @@ function ItemPage() {
                   disabled={actionLoading}
                   style={{ background: "#22c55e", color: "white" }}
                 >
-                  {actionLoading ? "Processing..." : "Mark as Found"}
+                  {actionLoading ? "Processing..." : "✅ Mark as Found"}
                 </button>
               )}
 
@@ -237,20 +253,20 @@ function ItemPage() {
                   disabled={actionLoading}
                   style={{ background: "#a78bfa", color: "white" }}
                 >
-                  {actionLoading ? "Processing..." : "Mark as Returned"}
+                  {actionLoading ? "Processing..." : "🔄 Mark as Returned"}
                 </button>
               )}
 
               {statusIndex === 3 && (
-                <p style={{ color: "#22c55e" }}>
-                  ✅ This item has been returned to its owner.
+                <p style={{ color: "var(--success)", fontWeight: "600", width: "100%", textAlign: "center" }}>
+                  ✅ This item has been successfully returned to its owner.
                 </p>
               )}
 
               {!isOwner && (
-                <p style={{ color: "#94a3b8", fontSize: "14px" }}>
+                <p style={{ color: "var(--text-muted)", fontSize: "14px", marginTop: "10px" }}>
                   Connected as: {account.slice(0, 6)}...{account.slice(-4)}
-                  {statusIndex === 1 && " — You can mark this item as found!"}
+                  {statusIndex === 1 && " — You can help by marking this as found!"}
                 </p>
               )}
             </div>
@@ -260,46 +276,5 @@ function ItemPage() {
     </div>
   );
 }
-
-const styles = {
-  container: {
-    minHeight: "100vh",
-    background: "linear-gradient(135deg, #0f172a, #1e293b)",
-    padding: "40px 20px",
-    fontFamily: "Arial, sans-serif",
-    color: "white",
-  },
-  card: {
-    maxWidth: "600px",
-    margin: "0 auto",
-    background: "#1e293b",
-    borderRadius: "20px",
-    padding: "30px",
-    boxShadow: "0 10px 40px rgba(0, 0, 0, 0.5)",
-  },
-  detailRow: {
-    display: "flex",
-    flexDirection: "column",
-    marginBottom: "15px",
-    padding: "12px",
-    background: "#0f172a",
-    borderRadius: "10px",
-  },
-  label: {
-    fontSize: "12px",
-    color: "#64748b",
-    textTransform: "uppercase",
-    marginBottom: "4px",
-    fontWeight: "bold",
-  },
-  badge: {
-    display: "inline-block",
-    padding: "6px 16px",
-    borderRadius: "20px",
-    fontWeight: "bold",
-    fontSize: "14px",
-    color: "white",
-  },
-};
 
 export default ItemPage;

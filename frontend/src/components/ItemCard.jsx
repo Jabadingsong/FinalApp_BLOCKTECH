@@ -26,30 +26,28 @@ function ItemCard({ item, showQR = false }) {
   };
 
   return (
-    <div
-      style={{
-        background: "#1e293b",
-        padding: "20px",
-        borderRadius: "15px",
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        border: "1px solid #334155"
-      }}
-    >
+    <div className="glass-card" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      {/* Item Image Preview */}
+      <div style={{ width: "100%", height: "150px", borderRadius: "10px", overflow: "hidden", marginBottom: "5px", background: "#0f172a", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid var(--border-color)" }}>
+        {item.image ? (
+          <img src={item.image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : (
+          <span style={{ color: "var(--text-muted)", fontSize: "12px" }}>No Image</span>
+        )}
+      </div>
+
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-        <h3 style={{ margin: 0, color: "#f8fafc" }}>{item.name}</h3>
+        <h3 style={{ margin: 0, color: "var(--text-main)" }}>{item.name}</h3>
         <StatusBadge statusIndex={item.status} style={{ padding: "4px 10px", fontSize: "12px" }} />
       </div>
 
-      <p style={{ color: "#94a3b8", fontSize: "14px", margin: "5px 0", flex: 1 }}>
+      <p style={{ color: "var(--text-muted)", fontSize: "14px", margin: "5px 0", flex: 1, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
         {item.description}
       </p>
 
       {/* QR Code Section (Only renders if showQR is true) */}
       {showQR && (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "10px", background: "rgba(255, 255, 255, 0.05)", padding: "15px", borderRadius: "10px", border: "1px dashed rgba(255, 255, 255, 0.1)" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "10px", background: "rgba(255, 255, 255, 0.03)", padding: "15px", borderRadius: "10px", border: "1px dashed var(--border-color)" }}>
           <div ref={qrRef} style={{ background: "white", padding: "10px", borderRadius: "8px" }}>
             <QRCodeCanvas value={`${window.location.origin}/item/${item.id}`} size={120} />
           </div>
@@ -63,10 +61,10 @@ function ItemCard({ item, showQR = false }) {
         </div>
       )}
 
-      <div style={{ fontSize: "12px", color: "#64748b", marginTop: "5px" }}>
+      <div style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "5px" }}>
         <p style={{ margin: "2px 0" }}><strong>ID:</strong> #{item.id?.toString()}</p>
         <p style={{ margin: "2px 0" }}><strong>Registered:</strong> {date}</p>
-        <p style={{ margin: "2px 0", wordBreak: "break-all" }}><strong>Owner:</strong> {item.owner}</p>
+        <p style={{ margin: "2px 0", wordBreak: "break-all" }}><strong>Owner:</strong> {item.owner.slice(0, 10)}...</p>
       </div>
 
       <div style={{ marginTop: "15px" }}>

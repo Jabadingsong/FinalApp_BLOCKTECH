@@ -131,8 +131,7 @@ function Home() {
               {/* DROPDOWN CONTAINER */}
               <div className="dropdown">
                 <button 
-                  className="btn scan" 
-                  style={{ margin: 0, width: "auto" }}
+                  className="btn secondary" 
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
                   📷 Scan QR ▼

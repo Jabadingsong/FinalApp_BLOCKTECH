@@ -21,6 +21,7 @@ contract BlockFind is ERC721 {
         Status status;
         uint256 timestamp;
         string qrHash;
+        string image;
     }
 
     mapping(uint => Item) public items;
@@ -36,7 +37,8 @@ contract BlockFind is ERC721 {
         string memory _name,
         string memory _description,
         string memory _contactInfo,
-        string memory _qrHash
+        string memory _qrHash,
+        string memory _image
     ) public {
         require(bytes(_name).length > 0, "Name required");
         require(bytes(_qrHash).length > 0, "QR hash required");
@@ -53,7 +55,8 @@ contract BlockFind is ERC721 {
             _contactInfo,
             Status.Registered,
             block.timestamp,
-            _qrHash
+            _qrHash,
+            _image
         );
 
         _mint(msg.sender, itemCount);
@@ -96,6 +99,7 @@ contract BlockFind is ERC721 {
 
     function deleteItem(uint _id) public {
         require(_id > 0 && _id <= itemCount, "Item does not exist");
+        require(items[_id].owner != address(0), "Item already deleted");
         require(ownerOf(_id) == msg.sender, "Not owner");
 
         delete qrHashExists[items[_id].qrHash];
@@ -128,7 +132,8 @@ contract BlockFind is ERC721 {
                 '"description": "', item.description, '",',
                 '"image": "', qrUrl, '",',
                 '"attributes": [',
-                    '{"trait_type": "Status", "value": "', statusStr, '"}',
+                    '{"trait_type": "Status", "value": "', statusStr, '"},',
+                    '{"trait_type": "Item Image", "value": "', item.image, '"}',
                 ']',
             '}'
         );

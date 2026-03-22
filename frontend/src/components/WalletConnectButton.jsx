@@ -35,20 +35,21 @@ function WalletConnectButton({ account, setAccount, balance }) {
     <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
       {/* BALANCE ALWAYS VISIBLE */}
       {balance && (
-        <span style={{ color: "#38bdf8", fontWeight: "bold", fontSize: "14px" }}>
+        <span style={{ color: "var(--accent-cyan)", fontWeight: "bold", fontSize: "14px" }}>
           {balance} ETH
         </span>
       )}
 
       {/* WALLET TOGGLE */}
       {showWallet && (
-        <span style={{ fontSize: "12px", color: "#94a3b8", wordBreak: "break-all", maxWidth: "150px" }}>
+        <span style={{ fontSize: "12px", color: "var(--text-muted)", wordBreak: "break-all", maxWidth: "150px" }}>
           {account.slice(0, 6)}...{account.slice(-4)}
         </span>
       )}
 
       <button
-        style={{ padding: "8px 12px", cursor: "pointer", borderRadius: "8px", border: "1px solid #334155", background: "#1e293b", color: "#e2e8f0" }}
+        className="btn secondary"
+        style={{ padding: "8px 12px", fontSize: "12px" }}
         onClick={() => setShowWallet(!showWallet)}
       >
         {showWallet ? "Hide" : "Show"} Address
@@ -56,7 +57,8 @@ function WalletConnectButton({ account, setAccount, balance }) {
 
       {/* DISCONNECT */}
       <button
-        style={{ padding: "8px 12px", cursor: "pointer", borderRadius: "8px", border: "none", background: "#ef4444", color: "white" }}
+        className="btn red"
+        style={{ padding: "8px 12px", fontSize: "12px" }}
         onClick={disconnectWallet}
       >
         Disconnect

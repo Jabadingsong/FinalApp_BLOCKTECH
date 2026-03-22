@@ -2,91 +2,251 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --bg-primary: #09090b;
-  --bg-secondary: #18181b;
-  --bg-glass: rgba(24, 24, 27, 0.7);
-  --primary: #38bdf8;
-  --primary-hover: #0ea5e9;
+  --bg-dark: #070b14;
+  --bg-card: rgba(30, 41, 59, 0.7);
+  --bg-white: #ffffff;
+  
+  --accent-cyan: #00e5ff;
+  --accent-purple: #7c4dff;
+  --accent-red: #ff3d00;
+  
   --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --danger: #ef4444;
-  --success: #22c55e;
+  --text-muted: #64748b;
+  --text-dark: #0f172a;
+  
+  --border-color: rgba(255, 255, 255, 0.08);
+  --input-border: #cbd5e1;
+  
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 20px 50px rgba(0, 0, 0, 0.6);
+  --glow-cyan: 0 0 20px rgba(0, 229, 255, 0.4);
+  --glow-purple: 0 0 20px rgba(124, 77, 255, 0.4);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: var(--bg-primary);
+  background: radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 1) 0%, rgba(7, 11, 20, 1) 90%);
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
-/* Base generic inputs */
-input, textarea {
-  width: 100%;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  color: white;
-  font-size: 15px;
-  font-family: 'Inter', sans-serif;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-
-input:focus, textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
-}
-
-/* Base generic buttons */
+/* Global Buttons */
 .btn {
   padding: 12px 24px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
 }
 
 .btn:active {
-  transform: scale(0.97);
+  transform: translateY(0);
 }
 
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
 }
 
 .btn.primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, #00e5ff 0%, #00b0ff 100%);
   color: #000;
-  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+  box-shadow: var(--glow-cyan);
 }
 
 .btn.primary:hover:not(:disabled) {
-  background: var(--primary-hover);
-  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+  background: linear-gradient(135deg, #33ebff 0%, #33c0ff 100%);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
 }
 
-/* Generic Reusable Card Element */
-.card {
-  background: var(--bg-secondary);
+.btn.purple {
+  background: linear-gradient(135deg, #7c4dff 0%, #651fff 100%);
+  color: #ffffff;
+  box-shadow: var(--glow-purple);
+}
+
+.btn.purple:hover:not(:disabled) {
+  background: linear-gradient(135deg, #9670ff 0%, #7c4dff 100%);
+  box-shadow: 0 0 30px rgba(124, 77, 255, 0.6);
+}
+
+.btn.dark {
+  background: #1e293b;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn.dark:hover:not(:disabled) {
+  background: #0f172a;
+  border-color: var(--accent-cyan);
+}
+
+.btn.red {
+  background: var(--accent-red);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 61, 0, 0.3);
+}
+
+.btn.secondary {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-main);
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(5px);
+}
+
+.btn.secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Dropdown System */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 12px;
+  background: #1e293b;
+  min-width: 220px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+  z-index: 2000;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.dropdown-item {
+  color: var(--text-main);
+  padding: 12px 16px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--accent-cyan);
+}
+
+/* Global Cards */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.white-card {
+  background: var(--bg-white);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+  color: var(--text-dark);
+}
+
+/* Global Inputs */
+.input-group {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #f1f5f9;
+  border-radius: 12px;
+  font-size: 15px;
+  background: #f8fafc;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-dark);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent-purple);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(124, 77, 255, 0.1);
+}
+
+.dark-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: white !important;
+}
+
+.dark-input:focus {
+  border-color: var(--accent-cyan);
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.1);
+}
+
+/* Detail Rows & Badges */
+.detail-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.detail-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
 }

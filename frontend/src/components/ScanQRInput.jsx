@@ -14,16 +14,16 @@ function ScanQRInput() {
   };
 
   return (
-    <form onSubmit={handleLookup} style={{ display: "flex", gap: "10px", width: "100%", maxWidth: "400px" }}>
+    <form onSubmit={handleLookup} style={{ display: "flex", gap: "10px", flex: 1 }}>
       <input
         type="number"
-        className="input"
+        className="form-input dark-input"
         placeholder="Enter Item ID..."
         value={itemId}
         onChange={(e) => setItemId(e.target.value)}
         style={{ margin: 0, flex: 1 }}
       />
-      <button type="submit" className="btn primary" style={{ margin: 0, width: "auto" }}>
+      <button type="submit" className="btn primary">
         Lookup
       </button>
     </form>

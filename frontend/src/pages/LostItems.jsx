@@ -39,19 +39,19 @@ function LostItems() {
 
   return (
     <div className="home" style={{ padding: "40px" }}>
-      <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-        <Link to="/" style={{ color: "#38bdf8", textDecoration: "none", display: "inline-block", marginBottom: "20px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <Link to="/" style={{ color: "var(--accent-cyan)", textDecoration: "none", display: "inline-block", marginBottom: "20px" }}>
           ← Back to Dashboard
         </Link>
         
-        <h2 style={{ marginBottom: "20px", color: "#f97316" }}>Currently Lost Items</h2>
+        <h2 style={{ marginBottom: "20px", color: "var(--accent-red)", fontSize: "28px" }}>Currently Lost Items</h2>
 
         {loading ? (
           <p>Loading reported items...</p>
         ) : items.length === 0 ? (
-          <div style={{ background: "#1e293b", border: "1px dashed #334155", padding: "40px", borderRadius: "15px", textAlign: "center" }}>
-            <p style={{ color: "#94a3b8", fontSize: "18px" }}>No items are currently reported as lost.</p>
-            <p style={{ color: "#64748b", marginTop: "10px" }}>Good news! Everything seems to be where it belongs.</p>
+          <div className="glass-card" style={{ textAlign: "center", padding: "40px" }}>
+            <p style={{ color: "var(--text-muted)", fontSize: "18px" }}>No items are currently reported as lost.</p>
+            <p style={{ color: "var(--text-secondary)", marginTop: "10px" }}>Good news! Everything seems to be where it belongs.</p>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>

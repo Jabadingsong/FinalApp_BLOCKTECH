@@ -7,72 +7,107 @@ function QRScanner() {
 
   const handleScan = (data) => {
     if (data) {
-      navigate(data.text.replace(window.location.origin, "")); // go to /item/:id
+      // Small delay for UX
+      setTimeout(() => {
+        const text = typeof data === 'string' ? data : data.text;
+        navigate(text.replace(window.location.origin, "")); 
+      }, 500);
     }
   };
 
   const handleError = (err) => {
-    console.error(err);
+    console.error("Scanner Error:", err);
+  };
+
+  const previewStyle = {
+    height: "100%",
+    width: "100%",
+    objectFit: "cover",
+    borderRadius: "20px"
+  };
+
+  const videoConstraints = {
+    facingMode: 'environment'
   };
 
   return (
-    <div className="home" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: "20px" }}>
+    <div className="home" style={{ 
+      display: "flex", 
+      flexDirection: "column", 
+      alignItems: "center", 
+      justifyContent: "center", 
+      minHeight: "100vh", 
+      padding: "40px 20px" 
+    }}>
       
-      <div style={{ width: "100%", maxWidth: "500px", marginBottom: "20px" }}>
-        <Link to="/" style={{ color: "#38bdf8", textDecoration: "none", display: "inline-block" }}>
+      <div style={{ maxWidth: "500px", width: "100%", textAlign: "center" }}>
+        <Link to="/" className="btn secondary" style={{ marginBottom: "40px", textTransform: "none" }}>
           ← Back to Dashboard
         </Link>
-      </div>
-
-      <div className="card" style={{ width: "100%", maxWidth: "500px", alignItems: "center", textAlign: "center" }}>
-        <h2 style={{ margin: "0 0 10px 0", color: "#f8fafc" }}>Camera Scanner</h2>
-        <p style={{ color: "#94a3b8", fontSize: "14px", marginBottom: "30px" }}>
-          Center the item's QR code within the frame below to instantly verify its blockchain status.
-        </p>
-
-        <div style={{ 
-          position: "relative", 
-          width: "300px", 
-          height: "300px", 
-          borderRadius: "15px", 
-          overflow: "hidden", 
-          border: "2px solid #38bdf8",
-          boxShadow: "0 0 20px rgba(56, 189, 248, 0.4)",
-          background: "#000"
-        }}>
-          {/* Overlay scanning line animation */}
-          <div style={{
-            position: "absolute",
-            top: 0, left: 0, right: 0,
-            height: "4px",
-            background: "#38bdf8",
-            boxShadow: "0 4px 10px rgba(56, 189, 248, 0.8)",
-            animation: "scanLine 2s linear infinite",
-            zIndex: 10
-          }}></div>
-
-          <QrScanner
-            delay={300}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            onError={handleError}
-            onScan={handleScan}
-          />
-        </div>
         
-        <p style={{ color: "#64748b", fontSize: "12px", marginTop: "30px" }}>
-          Ensure your camera lens is clean and the QR code is well-lit.
-        </p>
+        <div className="glass-card" style={{ padding: "40px" }}>
+          <h2 style={{ margin: "0 0 10px 0", fontSize: "28px", color: "var(--text-main)" }}>Camera Scanner</h2>
+          <p style={{ color: "var(--text-muted)", fontSize: "14px", marginBottom: "40px", fontWeight: "500" }}>
+            Center the item's QR code within the frame below to instantly verify its blockchain status.
+          </p>
+
+          <div style={{ 
+            position: "relative", 
+            width: "300px", 
+            height: "300px", 
+            margin: "0 auto",
+            borderRadius: "24px", 
+            overflow: "hidden", 
+            border: "2px solid var(--accent-cyan)",
+            boxShadow: "var(--glow-cyan)",
+            background: "#000"
+          }}>
+            {/* Overlay scanning line animation */}
+            <div style={{
+              position: "absolute",
+              top: 0, left: 0, right: 0,
+              height: "4px",
+              background: "var(--accent-cyan)",
+              boxShadow: "0 4px 15px var(--accent-cyan)",
+              animation: "scanLine 3s ease-in-out infinite",
+              zIndex: 10
+            }}></div>
+
+            <QrScanner
+              delay={300}
+              style={previewStyle}
+              onError={handleError}
+              onScan={handleScan}
+              constraints={{
+                video: videoConstraints
+              }}
+            />
+          </div>
+          
+          <p style={{ color: "var(--text-muted)", fontSize: "12px", marginTop: "40px", fontStyle: "italic" }}>
+            Ensure your camera lens is clean and the QR code is well-lit.
+          </p>
+        </div>
       </div>
 
       <style>{`
         @keyframes scanLine {
-          0% { top: 0%; }
-          50% { top: 100%; }
-          100% { top: 0%; }
+          0% { top: 10%; opacity: 0; }
+          10% { opacity: 1; }
+          50% { top: 90%; }
+          90% { opacity: 1; }
+          100% { top: 10%; opacity: 0; }
+        }
+        
+        /* Ensure the video element inside QrScanner fills the space */
+        video {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: cover !important;
         }
       `}</style>
     </div>
   );
 }
 
-export default QRScanner;
+export default QRScanner;

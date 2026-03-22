@@ -359,6 +359,11 @@
             "internalType": "string",
             "name": "qrHash",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "image",
+            "type": "string"
           }
         ],
         "internalType": "struct BlockFind.Item",
@@ -455,6 +460,11 @@
         "internalType": "string",
         "name": "qrHash",
         "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "image",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -538,6 +548,11 @@
       {
         "internalType": "string",
         "name": "_qrHash",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_image",
         "type": "string"
       }
     ],

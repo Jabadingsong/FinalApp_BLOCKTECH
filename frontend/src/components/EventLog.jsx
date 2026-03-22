@@ -38,31 +38,21 @@ function EventLog() {
   }, []);
 
   return (
-    <div className="card">
-      <h2>Event Log</h2>
+    <div className="glass-card">
+      <h2 style={{ marginTop: 0, marginBottom: "20px" }}>Event Log</h2>
       {events.length === 0 ? (
-        <p style={{ color: "#94a3b8" }}>No events yet</p>
+        <p style={{ color: "var(--text-muted)" }}>No events yet</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <div className="event-log-container">
           {events.map((e, idx) => (
-            <li
-              key={idx}
-              style={{
-                padding: "10px",
-                marginBottom: "8px",
-                background: "#1e293b",
-                borderRadius: "8px",
-                fontSize: "14px",
-              }}
-            >
-              <strong>Item #{e.returnValues.id?.toString()}</strong> — {e.returnValues.name}
-              <br />
-              <span style={{ color: "#94a3b8", fontSize: "12px" }}>
+            <div key={idx} className="event-item">
+              <strong style={{ display: "block", marginBottom: "5px" }}>Item #{e.returnValues.id?.toString()} — {e.returnValues.name}</strong>
+              <span style={{ color: "var(--text-muted)", fontSize: "12px", wordBreak: "break-all" }}>
                 Owner: {e.returnValues.owner}
               </span>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

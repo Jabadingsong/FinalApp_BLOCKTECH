@@ -14,12 +14,12 @@ describe("BlockFind", function () {
 
   describe("Registration", function () {
     it("should register an item and increment itemCount", async function () {
-      await blockFind.registerItem("Laptop", "MacBook Pro 14-inch", "owner@email.com", "hash123");
+      await blockFind.registerItem("Laptop", "MacBook Pro 14-inch", "owner@email.com", "hash123", "img_url");
       expect(await blockFind.itemCount()).to.equal(1);
     });
 
     it("should store correct item data including timestamp and qrHash", async function () {
-      await blockFind.registerItem("Phone", "iPhone 15", "john@email.com", "hash456");
+      await blockFind.registerItem("Phone", "iPhone 15", "john@email.com", "hash456", "img_url");
       const item = await blockFind.getItem(1);
 
       expect(item.id).to.equal(1);
@@ -30,34 +30,35 @@ describe("BlockFind", function () {
       expect(item.status).to.equal(0); // Registered
       expect(item.timestamp).to.be.gt(0); // Should have a block timestamp
       expect(item.qrHash).to.equal("hash456");
+      expect(item.image).to.equal("img_url");
     });
 
     it("should emit ItemRegistered event", async function () {
-      await expect(blockFind.registerItem("Wallet", "Brown leather", "test@email.com", "hash789"))
+      await expect(blockFind.registerItem("Wallet", "Brown leather", "test@email.com", "hash789", "img_url"))
         .to.emit(blockFind, "ItemRegistered")
         .withArgs(1, "Wallet", owner.address);
     });
 
     it("should reject registration if name is empty", async function () {
-      await expect(blockFind.registerItem("", "desc", "contact", "hash1"))
+      await expect(blockFind.registerItem("", "desc", "contact", "hash1", "img_url"))
         .to.be.revertedWith("Name required");
     });
 
     it("should reject registration if QR hash is empty", async function () {
-      await expect(blockFind.registerItem("Item", "desc", "contact", ""))
+      await expect(blockFind.registerItem("Item", "desc", "contact", "", "img_url"))
         .to.be.revertedWith("QR hash required");
     });
 
     it("should reject duplicate QR hashes", async function () {
-      await blockFind.registerItem("Item 1", "Desc", "contact", "uniqueHash");
-      await expect(blockFind.registerItem("Item 2", "Desc", "contact", "uniqueHash"))
+      await blockFind.registerItem("Item 1", "Desc", "contact", "uniqueHash", "img1");
+      await expect(blockFind.registerItem("Item 2", "Desc", "contact", "uniqueHash", "img2"))
         .to.be.revertedWith("QR hash already registered");
     });
   });
 
   describe("Ownership Verification", function () {
     beforeEach(async function () {
-      await blockFind.registerItem("Keys", "House keys", "owner@email.com", "keysHash");
+      await blockFind.registerItem("Keys", "House keys", "owner@email.com", "keysHash", "img_url");
     });
 
     it("should verify correct owner", async function () {
@@ -75,7 +76,7 @@ describe("BlockFind", function () {
 
   describe("Report Lost", function () {
     beforeEach(async function () {
-      await blockFind.registerItem("Phone", "iPhone 15", "owner@email.com", "phoneHash");
+      await blockFind.registerItem("Phone", "iPhone 15", "owner@email.com", "phoneHash", "img_url");
     });
 
     it("should allow owner to report item as lost", async function () {
@@ -93,7 +94,7 @@ describe("BlockFind", function () {
 
   describe("Mark Found", function () {
     beforeEach(async function () {
-      await blockFind.registerItem("Phone", "iPhone 15", "owner@email.com", "phoneHash");
+      await blockFind.registerItem("Phone", "iPhone 15", "owner@email.com", "phoneHash", "img_url");
       await blockFind.reportLost(1);
     });
 
@@ -106,7 +107,7 @@ describe("BlockFind", function () {
 
   describe("Mark Returned", function () {
     beforeEach(async function () {
-      await blockFind.registerItem("Phone", "iPhone 15", "owner@email.com", "phoneHash");
+      await blockFind.registerItem("Phone", "iPhone 15", "owner@email.com", "phoneHash", "img_url");
       await blockFind.reportLost(1);
       await blockFind.connect(finder).markFound(1);
     });
@@ -126,7 +127,7 @@ describe("BlockFind", function () {
 
   describe("Item Deletion", function () {
     beforeEach(async function () {
-      await blockFind.registerItem("Laptop", "MacBook Base", "contact@email.com", "deleteHash");
+      await blockFind.registerItem("Laptop", "MacBook Base", "contact@email.com", "deleteHash", "img_url");
     });
 
     it("should allow owner to delete item", async function () {
@@ -149,7 +150,7 @@ describe("BlockFind", function () {
       await blockFind.deleteItem(1);
       // Wait, let's verify if the QR hash is truly cleared by trying to register it again
       await expect(
-        blockFind.registerItem("New Laptop", "Air", "contact@email.com", "deleteHash")
+        blockFind.registerItem("New Laptop", "Air", "contact@email.com", "deleteHash", "img_url")
       ).to.not.be.reverted;
     });
 
