@@ -13,10 +13,6 @@ function FinalCard({ account }) {
   const [itemId, setItemId] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Generate a simple unique hash for the QR
-  const generateQRHash = () => {
-    return "qr_" + Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
-  };
 
   const registerItem = async () => {
     if (!account) return alert("Connect wallet first");
@@ -27,7 +23,11 @@ function FinalCard({ account }) {
       const web3 = new Web3(window.ethereum);
       const contract = new web3.eth.Contract(abi, CONTRACT_ADDRESS);
       
-      const qrHash = generateQRHash();
+      const currentCount = await contract.methods.itemCount().call();
+      const nextId = Number(currentCount) + 1;
+      
+      // Pass the full website URL so the NFT's QR code scans as a clickable link on any phone
+      const qrHash = window.location.origin + "/item/" + nextId;
 
       await contract.methods.registerItem(name, desc, contact, qrHash).send({ from: account });
       const id = await contract.methods.itemCount().call();
