@@ -1,8 +1,10 @@
 // frontend/src/pages/ItemPage.jsx
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import Web3 from "web3";
 import abi from "../abi.json";
+import { addNFTToMetaMask } from "../web3Service";
 
 const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
 const SEPOLIA_RPC = import.meta.env.VITE_SEPOLIA_RPC || "https://rpc.sepolia.org";
@@ -134,6 +136,16 @@ function ItemPage() {
           </span>
         </div>
 
+        <div style={{ textAlign: "center", marginBottom: "25px" }}>
+          <div style={{ background: "white", padding: "10px", display: "inline-block", borderRadius: "10px" }}>
+            {item.qrHash ? (
+              <QRCodeSVG value={item.qrHash} size={150} />
+            ) : (
+              <div style={{ width: 150, height: 150, display: "flex", alignItems: "center", justifyContent: "center", color: "black" }}>No QR</div>
+            )}
+          </div>
+        </div>
+
         {/* Item Details */}
         <div style={styles.detailRow}>
           <span style={styles.label}>Name</span>
@@ -184,6 +196,16 @@ function ItemPage() {
                       {actionLoading ? "Processing..." : "Report Lost"}
                     </button>
                   )}
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      addNFTToMetaMask(id)
+                        .catch(err => alert("Failed to add NFT: " + err.message));
+                    }}
+                    style={{ background: "#f59e0b", color: "white" }}
+                  >
+                    Add to MetaMask
+                  </button>
                   <button
                     className="btn"
                     onClick={handleDelete}

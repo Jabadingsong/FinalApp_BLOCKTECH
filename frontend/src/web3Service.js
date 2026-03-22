@@ -58,3 +58,23 @@ export async function getBalance(account) {
   });
   return (parseInt(bal, 16) / 1e18).toFixed(4);
 }
+
+// ── Add ERC721 NFT to MetaMask ──
+export async function addNFTToMetaMask(tokenId) {
+  if (!window.ethereum) throw new Error("MetaMask is not installed!");
+  try {
+    const success = await window.ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC721",
+        options: {
+          address: CONTRACT_ADDRESS,
+          tokenId: tokenId.toString(),
+        },
+      },
+    });
+    return success;
+  } catch (err) {
+    throw err;
+  }
+}
